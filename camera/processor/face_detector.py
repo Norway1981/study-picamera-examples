@@ -35,12 +35,21 @@ class FaceDetector(object):
         # 上記でグレースケールに変換したものをインスタンス化した顔分類器の
         # detectMultiScaleメソッドで処理し、認識した顔の座標情報を取得する
         faces = self.face_cascade.detectMultiScale(gray, 1.3, 3)
-        
+
+        font = cv2.FONT_HERSHEY_SCRIPT_COMPLEX
+        if len(faces) == 0:
+            text = 'No face'
+        elif len(faces) == 1:
+            text = 'A face'
+        else:
+            text = '{} faces :)'.format(len(faces))
+
+        cv2.putText(frame, text, (10,100), font, 4, (80,129,225), 2)
+           
         # 取得した座標情報を元に、cv2.rectangleを使ってframe上に
         # 顔の位置を描画する
      
         for (x,y,w,h) in faces:
-            cv2.putText(frame,'test',(x,y), FONT_HERSHEY_SIMPLEX, 4,(255,255,255))
             cv2.rectangle(frame,(x,y),(x+w,y+h),(255,255,0),2)
 
         # frameを戻り値として返す
